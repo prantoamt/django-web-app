@@ -1,0 +1,23 @@
+<div class="top-nav-bar">
+    <div class="search-box">
+        <i class="fa fa-bars" id="menu-btn" onclick="openMenu()"></i>
+        <i class="fa fa-times" id="close-btn" onclick="closeMenu()"></i>
+        {% load static %}
+        <a href="{% url 'products' %}"><img src="{% static '/img/PSD.png' %}" class="logo"></a>
+        <input type="text" class="form-control">
+        <button class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+    
+    <div class="menu-bar">
+        <ul>
+            <li><a href="{% url 'viewCart' %}"> <i class="fa fa-shopping-basket"></i> <span class="badge badge-dark">
+                {% if not request.session.item_count %}
+                0
+                {% else %}
+                {{request.session.item_count}}
+                {% endif %}</a></li>
+            <li><a href="#">Signup</a></li>
+            <li><a href="#">login</a></li>
+        </ul>
+    </div>
+</div>

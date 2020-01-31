@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if empty %}
+        <div class="alert alert-warning text-center" style="font-size: 30px;" role="alert">
+            {{empty}}
+        </div>
+        <br><br><br>
+    {%else%}
+    
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 col-sm-offset-2">
+            <table class="table table-hover">
+                <thead>
+                    <th>Item</th>
+                    <th>Price/unit</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Sub-Total: </td>
+                        <td>{{cart.total}}</td>
+                        <td><span class="badge badge-success">Total saving: {{discount|dict_key:"total_discount"}}% </span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"><a href="{% url 'products' %}"><button class="btn btn-warning">Continue Shopping</button></a></td>
+                        <td><a href="{% url 'checkout' %}"><button class="btn btn-success">Checkout</button></a></td>
+                    </tr>
+                </tfoot>
+                {% for item in cart.cartitem_set.all %}
+                    <tr>
+                        <td>{{item.product.product_name}}</td>
+                        <td>{{item.product.price}}</td>
+                        <td><a href="{% url 'update_cart' item.product.slug %}?qty=-1"><i class="fa fa-minus mr-2"></i></a>{{item.quantity}}<a href="{% url 'update_cart' item.product.slug %}?qty=+1"><i class="fa fa-plus ml-2"></i></a></td>
+                        {% with key=item.product.id %}
+                          
+                        <td>{{item.line_total}}</td>
+                        <td><span class="badge badge-success">Saving: {{discount|dict_key:key}}% </span></td>
+                        {% endwith %}
+                        <td><a href="{% url 'update_cart' item.product.slug %}?qty=0"> <i class="fa fa-trash-o" style="color: red;"></i> </a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

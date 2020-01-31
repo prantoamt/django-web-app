@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <div class="container">
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div style="padding: 15px" class="col-md-4">
+					{% for image in product.productimage_set.all %}
+						{% if image.featured == True and image.active == True %}
+						<img src="/media/{{image.image}}"
+                        class="card-img" width="400" height="400" alt="...">
+						{% endif %}
+					{% endfor %}	
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">
+                            <div class="alert alert-primary" role="alert">
+                            <strong>{{product.product_name}}</strong>
+                        </div></h5>
+                        <p class="card-text">{{product.description}}</p>
+
+                        <h5 style="color: teal" class="card-subtitle mb-3">Price ৳: {{product.price}} Taka </h5>
+                        
+                        <div class="input-group mb-3">
+							<form class="form" method="GET" action="{% url 'update_cart' product.slug %}">                    
+						</div>						
+								<button type="submit" class="btn btn-warning"><i class="fa fa-cart-plus"></i> Add to
+								Cart</button>
+							</form>                    
+                    </div>
+                                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+{% endblock %}

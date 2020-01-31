@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'owl-carousel/owl.carousel.min.js' %}"></script>    
+    
+{% block content %}
+
+    <section class="header">
+        {% include 'products_template/side_navbar.html' %}
+        <div class="slider">
+            <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+                
+                <div class="carousel-inner">
+                    {% load static %}
+                    <div class="carousel-item active">
+                    <img src="{% static 'img/004.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="{% static 'img/slider1.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="{% static 'img/004.jpg' %}" class="d-block w-100">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <ol class="carousel-indicators">
+                    <li data-target="#slider" data-slide-to="0" class="active"></li>
+                    <li data-target="#slider" data-slide-to="1"></li>
+                    <li data-target="#slider" data-slide-to="2"></li>
+                </ol>      
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-categories">
+        <div class="container">
+            <div class="row">
+            {% for item in products %}
+            {% if item.category == "featured" %}
+            {% for image in item.productimage_set.all %}
+                <div class="col-md-4">
+                    {% if image.thumbnail == True and image.active == True %}
+                    <a href="{% url 'single_product' item.slug %}">
+                        <img src="/media/{{image.image}}">
+                    </a>
+                    {% endif %}
+                    <div class="product-bottom text-center">
+                        <a href="{% url 'single_product' item.slug %}">
+                        <h6>{{item.product_name}}</h6>
+                        </a>
+                        <h5>BDT {{item.price}}</h5>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            {% endif %}          
+            {% endfor %}    
+            </div>
+        </div>
+    </section>
+
+    <section class="on-sale">
+        <div class="container">
+            <div class="title-box">
+                <h2>On Sale</h2>
+            </div>
+            <div class="row">
+                {% for item in products %}
+                {% if item.category == "on sale" %}
+                <div class="col-md-3">
+                    {% for image in item.productimage_set.all %}    
+                        <div class="product-top">
+                            {% if image.thumbnail == True and image.active == True %}
+                            <a href="{% url 'single_product' item.slug %}">
+                            <img src="/media/{{image.image}}">
+                            </a>
+                            {% endif %}
+                    {% endfor %}        
+                            <div class="overlay-right">
+                                <a href="{% url 'single_product' item.slug %}">
+                                <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                </a>
+                                <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                    <i class="fa fa-heart-o"></i>
+                                </button>
+                                <a href="{% url 'update_cart' item.slug %}">
+                                <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                                </a>
+                            </div>
+                            <div class="overlay-left">
+                                    {% with key=item.id %}
+                                    <span style="color: red;">{{ percentage_discount|dict_key:key }}%</span>                           
+                                    {% endwith %}
+                            </div>
+                            <div class="product-bottom text-center">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <a href="{% url 'single_product' item.slug %}">
+                                <h6>{{item.product_name}}</h6>
+                                </a>
+                                <h6 style="color: brown;">Price: BDT {{item.price}}</h6>
+                                <h5 style="color: blue;">Sale: BDT {{item.sale}}</h5>
+                            </div>
+                        </div>
+                </div>        
+                {% endif %}
+                {% endfor %}                                     
+            </div>
+        </div>                
+    </section>
+
+    <section class="new-product">
+        <div class="container">
+            <div class="title-box">
+                <h2>New Arrivals</h2>
+            </div>
+            <div class="row">
+                {% for item in products %}
+                {% if item.category == "new arrival" %}
+                <div class="col-md-3">
+                    {% for image in item.productimage_set.all %}    
+                        <div class="product-top">
+                            {% if image.thumbnail == True and image.active == True %}
+                            <a href="{% url 'single_product' item.slug %}">
+                            <img src="/media/{{image.image}}">
+                            </a>
+                            {% endif %}
+                    {% endfor %}        
+                        <div class="overlay-right">
+                            <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary" title="Quick Shop">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                        <div class="product-bottom text-center">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                            <a href="{% url 'single_product' item.slug %}">
+                            <h6>{{item.product_name}}</h6>
+                            </a>
+                            <h6>BDT {{item.price}}</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}                
+                      
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+    {% block script %}
+    function openMenu(){
+        document.getElementById("side-menu").style.display="block";
+        document.getElementById("menu-btn").style.display="none";
+        document.getElementById("close-btn").style.display="block";
+    }
+    function closeMenu(){
+        document.getElementById("side-menu").style.display="none";
+        document.getElementById("menu-btn").style.display="block";
+        document.getElementById("close-btn").style.display="none";
+    }
+
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            items: 1,
+            nav: true,
+            loop: true,
+            autoplay: true
+        });
+        });
+
+{% endblock %}
